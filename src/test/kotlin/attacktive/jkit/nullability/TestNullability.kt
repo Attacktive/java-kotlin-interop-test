@@ -28,10 +28,29 @@ internal class TestNullability {
 			 * The return type of [NullableStringGenerator.get] is "ambiguous".
 			 *
 			 * [NullableStringGenerator.get] could actually return `null` but the very fact can't be acknowledged from the Java method signature without the appropriate annotation.
-			 * As a result, Kotlin compiler cannot complain that [NullableStringGenerator.get] is nullable.
+			 * As a result, the Kotlin compiler cannot complain that [NullableStringGenerator.get] is nullable.
 			 */
 			@Suppress("UNUSED_VARIABLE")
 			val nonNullNullString: String = NullableStringGenerator.get(false)
 		}
+	}
+
+	@Test
+	fun testAnnotatedNonNullString() {
+		val annotatedNonNullString = NullableStringGenerator.getNullable(true)
+
+		println("annotatedNonNullString: $annotatedNonNullString")
+		assertEquals(NullableStringGenerator.TEXT, annotatedNonNullString)
+	}
+
+	@Test
+	fun testAnnotatedNullableNullString() {
+		/**
+		 * [NullableStringGenerator.getNullable] is annotated with [org.jetbrains.annotations.Nullable], so `val x: String = NullableStringGenerator.getNullable(false)` now doesn't compile.
+		 */
+		val annotatedNullableNullString: String? = NullableStringGenerator.getNullable(false)
+
+		println("annotatedNullableNullString: $annotatedNullableNullString")
+		assertEquals(null as String?, annotatedNullableNullString)
 	}
 }
