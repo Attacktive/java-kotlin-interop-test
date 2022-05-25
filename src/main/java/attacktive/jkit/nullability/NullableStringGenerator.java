@@ -3,6 +3,7 @@ package attacktive.jkit.nullability;
 import java.security.SecureRandom;
 import java.util.Random;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 class NullableStringGenerator {
@@ -37,6 +38,26 @@ class NullableStringGenerator {
 
 	@Nullable
 	public static String getNullable(boolean nonNull) {
+		return (nonNull? TEXT: null);
+	}
+
+	@NotNull
+	public static String getNotNull() {
+		return getNotNull(0.5F);
+	}
+
+	@NotNull
+	public static String getNotNull(double probability) {
+		var randomDouble = random.nextDouble();
+		return getNotNull(randomDouble <= probability);
+	}
+
+	/**
+	 * It should never be annotated with {@link org.jetbrains.annotations.NotNull}, but I did that intentionally.
+	 */
+	@SuppressWarnings("ConstantConditions")
+	@NotNull
+	public static String getNotNull(boolean nonNull) {
 		return (nonNull? TEXT: null);
 	}
 }

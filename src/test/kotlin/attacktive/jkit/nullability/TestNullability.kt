@@ -53,4 +53,29 @@ internal class TestNullability {
 		println("annotatedNullableNullString: $annotatedNullableNullString")
 		assertEquals(null as String?, annotatedNullableNullString)
 	}
+
+	@Test
+	fun testImproperlyAnnotatedNonNullString() {
+		val improperlyAnnotatedNonNullString = NullableStringGenerator.getNotNull(true)
+
+		println("improperlyAnnotatedNonNullString: $improperlyAnnotatedNonNullString")
+		assertEquals(NullableStringGenerator.TEXT, improperlyAnnotatedNonNullString)
+	}
+
+	@Test
+	fun testImproperlyAnnotatedNullableNullString() {
+		@Suppress("RedundantNullableReturnType")
+		val improperlyAnnotatedNullableNullString: String? = NullableStringGenerator.getNotNull(false)
+
+		println("improperlyAnnotatedNullableNullString: $improperlyAnnotatedNullableNullString")
+		assertEquals(null as String?, improperlyAnnotatedNullableNullString)
+	}
+
+	@Test
+	fun testImproperlyAnnotatedNonNullNullString() {
+		assertThrows<NullPointerException> {
+			@Suppress("UNUSED_VARIABLE")
+			val nonNullNullString: String = NullableStringGenerator.getNotNull(false)
+		}
+	}
 }
